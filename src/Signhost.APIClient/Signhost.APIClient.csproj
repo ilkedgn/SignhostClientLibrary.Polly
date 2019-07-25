@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Build">
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <RootNamespace>Signhost.APIClient</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package">
+    <VersionBuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$(APPVEYOR_BUILD_NUMBER)</VersionBuildNumber>
+    <VersionBuildNumber Condition="'$(VersionBuildNumber)' == ''">0</VersionBuildNumber>
+    <VersionPrefix>1.0.$(VersionBuildNumber)</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(SH_VERSION_SUFFIX)</VersionSuffix>
+    <Authors>Evidos</Authors>
+    <Product>Signhost</Product>
+    <Copyright>Copyright 2019 © Evidos</Copyright>
+    <PackageProjectUrl>https://github.com/Evidos/SignhostClientLibrary.Polly</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageId>SignhostClientLibrary.Polly</PackageId>
+    <PackageTags>sign;signing;digital signature;pdf</PackageTags>
+    <PackageReleaseNotes>
+      * 1.0.0 - Initial release
+    </PackageReleaseNotes>
+    <Company>Evidos</Company>
+    <Description>A .NET library for the signhost.com api, with a built-in retry mechanism.</Description>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>$(VersionPrefix)</FileVersion>
+    <InformationalVersion>$(VersionPrefix) $(VersionSufix)</InformationalVersion>
+  </PropertyGroup>
+
+  <ItemGroup Label="Package References">
+    <PackageReference Include="ConfigureAwait.Fody" Version="3.2.0" />
+    <PackageReference Include="Fody" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Polly" Version="7.1.0" />
+    <PackageReference Include="SignhostClientLibrary" Version="3.0.399" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Signhost rules" Description="Signhost rules" ToolsVersion="14.0">
+  <Include Path="BasicDesignGuidelineRules.ruleset" Action="Default" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA2202" Action="None" /><!-- Do not dispose objects multiple times -->
+  </Rules>
+  <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
+  </Rules>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA0001" Action="None" /><!-- XML comment analysis is disabled due to project configuration -->
+    <Rule Id="SA1001" Action="None" /><!-- Commas should not be preceded by whitespace. --> 
+    <Rule Id="SA1009" Action="None" /><!-- Closing parenthesis must not be preceded by a space -->
+    <Rule Id="SA1111" Action="None" /><!-- Closing parenthesis must be on line of last parameter -->
+    <Rule Id="SA1025" Action="None" /><!-- Code must not contain multiple whitespaces in a row -->
+    <Rule Id="SA1027" Action="None" /><!-- Tabs must not be used -->
+    <Rule Id="SA1311" Action="None" /><!-- Static readonly fields must begin with upper-case letter -->
+    <Rule Id="SA1600" Action="None" /><!-- Elements must be documented -->
+    <Rule Id="SA1633" Action="None" /><!-- FileMustHaveHeader -->
+    <Rule Id="SA1652" Action="None" /><!-- Enable XML documentation output -->
+    <Rule Id="SA1101" Action="None" /><!-- Prefix local calls with this -->
+    <Rule Id="SA1500" Action="None" /><!-- Curly brackets for multiline statements must not share line -->
+    <Rule Id="SA1121" Action="None" /><!-- Use built-in type alias -->
+</Rules>
+</RuleSet>
