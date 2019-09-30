@@ -26,8 +26,11 @@ namespace Signhost.APIClient.Rest.Polly
 		/// Set your usertoken and APPKey by creating a <see cref="SignHostApiClientSettings"/>.
 		/// </summary>
 		/// <param name="settings"><see cref="SignHostApiClientSettings"/>.</param>
-		public SignHostApiRetryClient(ISignHostApiClientSettings settings)
-			: this(settings, new HttpClient())
+		/// <param name="policy">An <see cref="AsyncPolicy"/> to use instead of the default.</param>
+		public SignHostApiRetryClient(
+			ISignHostApiClientSettings settings,
+			AsyncPolicy policy = null)
+			: this(settings, new HttpClient(), policy)
 		{
 		}
 
@@ -38,24 +41,20 @@ namespace Signhost.APIClient.Rest.Polly
 		/// </summary>
 		/// <param name="settings"><see cref="SignHostApiClientSettings"/>.</param>
 		/// <param name="httpClient"><see cref="HttpClient"/> to use for all http calls.</param>
+		/// <param name="policy">An <see cref="AsyncPolicy"/> to use instead of the default.</param>
 		public SignHostApiRetryClient(
 			ISignHostApiClientSettings settings,
-			HttpClient httpClient)
+			HttpClient httpClient,
+			AsyncPolicy policy = null)
 		{
 			client = new SignHostApiClient(settings, httpClient);
-			retryPolicy = Policy
-				.Handle<SignhostRestApiClientException>(ex =>
-					!(ex is BadAuthorizationException) &&
-					!(ex is BadRequestException) &&
-					!(ex is NotFoundException))
 
-				// When an HttpClient times out it doesn't throw a TimeoutException like you'd expect.
-				// Instead it throws a TaskCanceledException, that's why we check the cancellation token.
-				.Or<TaskCanceledException>(ex => !ex.CancellationToken.IsCancellationRequested)
-				.WaitAndRetryAsync(
-					3,
-					retryAttempt =>
-						TimeSpan.FromMilliseconds(Math.Pow(10, retryAttempt)));
+			if (policy is null) {
+				retryPolicy = GetDefaultPolicy();
+			}
+			else {
+				retryPolicy = policy;
+			}
 		}
 
 		/// <inheritdoc />
@@ -308,6 +307,23 @@ namespace Signhost.APIClient.Rest.Polly
 			if (disposing) {
 				client?.Dispose();
 			}
+		}
+
+		private static AsyncPolicy GetDefaultPolicy()
+		{
+			return Policy
+				.Handle<SignhostRestApiClientException>(ex =>
+					!(ex is BadAuthorizationException) &&
+					!(ex is BadRequestException) &&
+					!(ex is NotFoundException))
+
+				// When an HttpClient times out it doesn't throw a TimeoutException like you'd expect.
+				// Instead it throws a TaskCanceledException, that's why we check the cancellation token.
+				.Or<TaskCanceledException>(ex => !ex.CancellationToken.IsCancellationRequested)
+				.WaitAndRetryAsync(
+					3,
+					retryAttempt =>
+						TimeSpan.FromMilliseconds(Math.Pow(10, retryAttempt)));
 		}
 	}
 }
