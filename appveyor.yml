@@ -1,0 +1,32 @@
+environment:
+  SH_VERSION_SUFFIX: 'preview'
+
+configuration: Release
+
+image: Visual Studio 2017
+
+for:
+- branches:
+    only:
+      - master
+  environment:
+    SH_VERSION_SUFFIX: ''
+
+before_build:
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { Set-AppveyorBuildVariable 'SH_VERSION_SUFFIX' 'alpha' }
+  - cmd: dotnet restore "src\SignhostAPIRetryClient.sln"
+
+build_script:
+  - dotnet build "src\SignhostAPIRetryClient.sln"
+  - dotnet pack "src\Signhost.APIClient\Signhost.APIClient.csproj"
+
+test_script:
+  - dotnet test --no-build "src/Signhost.APIClient.Tests/Signhost.APIClient.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./result.cover" /p:Exclude="[xunit*]*"
+
+nuget:
+  project_feed: true
+  disable_publish_on_pr: false
+
+artifacts:
+  - path: '**\*.nupkg'
+    name: Nuget
