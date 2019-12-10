@@ -35,7 +35,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Polly" Version="7.1.0" />
-    <PackageReference Include="SignhostClientLibrary" Version="3.0.399" />
+    <PackageReference Include="SignhostClientLibrary" Version="3.0.411" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
   </ItemGroup>
 </Project>
