@@ -36,8 +36,7 @@ namespace SignhostAPIRetryClient.Tests
 		public SignhostApiRetryClientTests()
 		{
 			settings = new SignHostApiClientSettings(
-				"AppKey",
-				"AuthKey") {
+				"AppKey") {
 				Endpoint = "http://localhost/api/",
 			};
 
@@ -83,7 +82,7 @@ namespace SignhostAPIRetryClient.Tests
 					new FileMeta(),
 					"Transaction Id",
 					"File Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -99,7 +98,7 @@ namespace SignhostAPIRetryClient.Tests
 					"Transaction Id",
 					"File Id",
 					new FileUploadOptions());
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -111,7 +110,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				firstCallSucceedsClient.CreateTransactionAsync(new Transaction());
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -125,7 +124,7 @@ namespace SignhostAPIRetryClient.Tests
 				firstCallSucceedsClient.DeleteTransactionAsync(
 					"Transaction Id",
 					new DeleteTransactionOptions());
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -139,7 +138,7 @@ namespace SignhostAPIRetryClient.Tests
 				firstCallSucceedsClient.GetDocumentAsync(
 					"Transaction Id",
 					"File Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -151,7 +150,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				firstCallSucceedsClient.GetReceiptAsync("Transaction Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -163,7 +162,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				firstCallSucceedsClient.GetTransactionAsync("transaction Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -175,7 +174,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				firstCallSucceedsClient.GetTransactionResponseAsync("Transaction Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -190,7 +189,7 @@ namespace SignhostAPIRetryClient.Tests
 					new FileMeta(),
 					"Transaction Id",
 					"File Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -206,7 +205,7 @@ namespace SignhostAPIRetryClient.Tests
 					"Transaction Id",
 					"File Id",
 					new FileUploadOptions());
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -218,7 +217,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				thirdCallSucceedsClient.CreateTransactionAsync(new Transaction());
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -232,7 +231,7 @@ namespace SignhostAPIRetryClient.Tests
 				thirdCallSucceedsClient.DeleteTransactionAsync(
 					"Transaction Id",
 					new DeleteTransactionOptions());
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -246,7 +245,7 @@ namespace SignhostAPIRetryClient.Tests
 				thirdCallSucceedsClient.GetDocumentAsync(
 					"Transaction Id",
 					"File Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -258,7 +257,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				thirdCallSucceedsClient.GetReceiptAsync("Transaction Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -270,7 +269,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				thirdCallSucceedsClient.GetTransactionAsync("transaction Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -282,7 +281,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				thirdCallSucceedsClient.GetTransactionResponseAsync("Transaction Id");
-			apiCall.Should().NotThrow<SignhostRestApiClientException>();
+			apiCall.Should().NotThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -297,7 +296,7 @@ namespace SignhostAPIRetryClient.Tests
 					new FileMeta(),
 					"Transaction Id",
 					"File Id");
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -313,7 +312,7 @@ namespace SignhostAPIRetryClient.Tests
 					"Transaction Id",
 					"File Id",
 					new FileUploadOptions());
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -325,7 +324,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				allCallsFailClient.CreateTransactionAsync(new Transaction());
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -339,7 +338,7 @@ namespace SignhostAPIRetryClient.Tests
 				allCallsFailClient.DeleteTransactionAsync(
 					"Transaction Id",
 					new DeleteTransactionOptions());
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -353,7 +352,7 @@ namespace SignhostAPIRetryClient.Tests
 				allCallsFailClient.GetDocumentAsync(
 					"Transaction Id",
 					"File Id");
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -365,7 +364,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				allCallsFailClient.GetReceiptAsync("Transaction Id");
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -377,7 +376,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				allCallsFailClient.GetTransactionAsync("transaction Id");
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <summary>
@@ -389,7 +388,7 @@ namespace SignhostAPIRetryClient.Tests
 		{
 			Func<Task> apiCall = () =>
 				allCallsFailClient.GetTransactionResponseAsync("Transaction Id");
-			apiCall.Should().Throw<SignhostRestApiClientException>();
+			apiCall.Should().ThrowAsync<SignhostRestApiClientException>();
 		}
 
 		/// <inheritdoc/>
