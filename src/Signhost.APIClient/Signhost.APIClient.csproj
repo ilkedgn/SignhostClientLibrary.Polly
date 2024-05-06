@@ -9,18 +9,18 @@
     <VersionBuildNumber Condition="'$(VersionBuildNumber)' == ''">0</VersionBuildNumber>
     <VersionPrefix>2.0.$(VersionBuildNumber)</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(SH_VERSION_SUFFIX)</VersionSuffix>
-    <Authors>Evidos</Authors>
+    <Authors>Entrust</Authors>
     <Product>Signhost</Product>
-    <Copyright>Copyright 2019 © Evidos</Copyright>
+    <Copyright>© Entrust</Copyright>
     <PackageProjectUrl>https://github.com/Evidos/SignhostClientLibrary.Polly</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageId>SignhostClientLibrary.Polly</PackageId>
+    <PackageId>EntrustSignhostClientLibrary.Polly</PackageId>
     <PackageTags>sign;signing;digital signature;pdf</PackageTags>
     <PackageReleaseNotes>
       * 1.0.0 - Initial release
       * 2.0.0 - Bump SignhostClientLibrary
     </PackageReleaseNotes>
-    <Company>Evidos</Company>
+    <Company>Entrust</Company>
     <Description>A .NET library for the signhost.com api, with a built-in retry mechanism.</Description>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
