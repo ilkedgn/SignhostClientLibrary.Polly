@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      SH_VERSION_SUFFIX: ${{ github.event_name == 'pull_request' && 'alpha' || 'preview' }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x' # or whichever version you need
+
+    - name: Restore NuGet packages
+      run: dotnet restore "src\SignhostAPIRetryClient.sln"
+
+    - name: Build solution
+      run: dotnet build "src\SignhostAPIRetryClient.sln"
+
+    - name: Set PR number if available
+      if: ${{ github.event_name == 'pull_request' }}
+      run: echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+
+    - name: Pack project
+      run: dotnet pack /p:Version=2.0.PR${{ env.PR_NUMBER || '' }}-${{ env.SH_VERSION_SUFFIX }} "src\Signhost.APIClient\Signhost.APIClient.csproj"

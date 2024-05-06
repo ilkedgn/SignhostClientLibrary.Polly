@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <VersionBuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$(APPVEYOR_BUILD_NUMBER)</VersionBuildNumber>
+    <VersionBuildNumber Condition="'$(GITHUB_RUN_NUMBER)' != ''">$(GITHUB_RUN_NUMBER)</VersionBuildNumber>
     <VersionBuildNumber Condition="'$(VersionBuildNumber)' == ''">0</VersionBuildNumber>
-    <VersionPrefix>2.0.$(VersionBuildNumber)</VersionPrefix>
+    <VersionPrefix>2.0.$(GITHUB_RUN_NUMBER)</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(SH_VERSION_SUFFIX)</VersionSuffix>
     <Authors>Evidos</Authors>
     <Product>Signhost</Product>
