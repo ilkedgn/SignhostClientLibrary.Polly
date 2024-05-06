@@ -2,17 +2,11 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
   pull_request:
 
 jobs:
   build:
     runs-on: windows-latest
-
-    env:
-      SH_VERSION_SUFFIX: ${{ github.event_name == 'pull_request' && 'alpha' || '' }}
-      PACKAGE_VERSION: ${{ github.event_name == 'pull_request' && '2.0.${{ github.run_number }}-alpha' || '2.0.${{ github.run_number }}' }}
 
     steps:
       - name: Checkout code
@@ -29,5 +23,14 @@ jobs:
       - name: Build solution
         run: dotnet build "src\SignhostAPIRetryClient.sln"
 
+      - name: Set version number
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            version="2.0.${GITHUB_RUN_NUMBER}-PR-${{ github.event.pull_request.number }}"
+          else
+            version="2.0.${GITHUB_RUN_NUMBER}-alpha"
+          fi
+          echo "::set-env name=VERSION_NUMBER::$version"
+
       - name: Pack project
-        run: dotnet pack /p:Version=${{ env.PACKAGE_VERSION }} "src\Signhost.APIClient\Signhost.APIClient.csproj"
+        run: dotnet pack /p:Version=2.0.${{ GITHUB_RUN_NUMBER || 'alpha' }}-${{ env.SH_VERSION_SUFFIX }} "src\Signhost.APIClient\Signhost.APIClient.csproj"
