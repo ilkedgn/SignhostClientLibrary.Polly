@@ -8,9 +8,6 @@ jobs:
   build:
     runs-on: windows-latest
 
-    env:
-      SH_VERSION_SUFFIX: ${{ github.event_name == 'pull_request' && 'PR' || 'preview' }}-${{ github.event.pull_request.number || 'alpha' }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,4 +24,4 @@ jobs:
         run: dotnet build "src\SignhostAPIRetryClient.sln"
 
       - name: Pack project
-        run: dotnet pack "src\Signhost.APIClient\Signhost.APIClient.csproj"
+        run: dotnet pack /p:Version=2.0.${{ github.event.pull_request.number || 'alpha' }}-${{ env.SH_VERSION_SUFFIX }} "src\Signhost.APIClient\Signhost.APIClient.csproj"
