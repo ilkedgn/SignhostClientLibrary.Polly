@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+env:
+  SH_VERSION_SUFFIX: 'preview'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    environment: dev
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+
+      - name: Calculate Version Number
+        id: version
+        run: |
+          MAJOR_VERSION=${{ vars.MAJOR_VERSIONV4 }}
+          MINOR_VERSION=${{ vars.MINOR_VERSION }}
+          BUILD_NUMBER=${GITHUB_RUN_NUMBER}
+          BRANCH_NAME=${GITHUB_REF##*/}
+
+          MAJOR_VERSION=${MAJOR_VERSION:-0}
+          MINOR_VERSION=${MINOR_VERSION:-0}
+          VERSION="${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}"
+
+          if [ "$BRANCH_NAME" != "master" ]; then
+            VERSION="${VERSION}-preview"
+          fi
+
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Major Version: $MAJOR_VERSION"
+          echo "Minor Version: $MINOR_VERSION"
+          echo "Build Number: $BUILD_NUMBER"
+          echo "Branch Name: $BRANCH_NAME"
+          echo "Version: $VERSION"
+        shell: bash
+
+      - name: Clear NuGet Cache
+        run: dotnet nuget locals all --clear
+
+      - name: Restore NuGet packages
+        run: dotnet restore "src/SignhostAPIRetryClient.sln"
+        continue-on-error: ${{ github.event.pull_request.head.repo.fork == true }}
+        if: ${{ github.event.pull_request.head.repo.fork == false }}
+      - name: Build solution
+        run: dotnet build "src/SignhostAPIRetryClient.sln" --configuration Release
+
+      - name: Test with Coverage
+        run: dotnet test --no-build src/Signhost.APIClient.Tests/Signhost.APIClient.Tests.csproj --collect:"XPlat Code Coverage" -c Release
+
+      - name: Pack NuGet package
+        run: dotnet pack "src/Signhost.APIClient/Signhost.APIClient.csproj" --configuration Release /p:Version=${{ env.VERSION }} /p:IncludeReadmeFile=true
+        if: ${{ github.event.pull_request.head.repo.fork == false }}
+
+      - name: Upload NuGet Package
+        uses: actions/upload-artifact@v3
+        with:
+          name: Nuget
+          path: '**/*.nupkg'
+        if: ${{ github.event.pull_request.head.repo.fork == false }}
+
+      - name: Publish NuGet package to NuGet.org
+        run: |
+          dotnet nuget push '**/*.nupkg' --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+        env:
+          POLLY_TEST: ${{ secrets.NUGET_KEY }}
+        if: ${{ github.event.pull_request.head.repo.fork == false }}
