@@ -7,7 +7,7 @@
   <PropertyGroup Label="Package">
     <VersionBuildNumber Condition="'$(APPVEYOR_BUILD_NUMBER)' != ''">$(APPVEYOR_BUILD_NUMBER)</VersionBuildNumber>
     <VersionBuildNumber Condition="'$(VersionBuildNumber)' == ''">0</VersionBuildNumber>
-    <VersionPrefix>2.0.$(VersionBuildNumber)</VersionPrefix>
+    <VersionPrefix>4.0.$(VersionBuildNumber)</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(SH_VERSION_SUFFIX)</VersionSuffix>
     <Authors>Evidos</Authors>
     <Product>Signhost</Product>
@@ -17,8 +17,7 @@
     <PackageId>SignhostClientLibrary.Polly</PackageId>
     <PackageTags>sign;signing;digital signature;pdf</PackageTags>
     <PackageReleaseNotes>
-      * 1.0.0 - Initial release
-      * 2.0.0 - Bump SignhostClientLibrary
+      * 4.0.0 - Bump to SignhostClientLibrary v4 major version
     </PackageReleaseNotes>
     <Company>Evidos</Company>
     <Description>A .NET library for the signhost.com api, with a built-in retry mechanism.</Description>
@@ -36,7 +35,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Polly" Version="7.1.1" />
-    <PackageReference Include="SignhostClientLibrary" Version="4.0.473" />
+    <PackageReference Include="EntrustSignhostClientLibrary" Version="4.0.584-preview" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
   </ItemGroup>
 </Project>
