@@ -36,8 +36,7 @@ namespace SignhostAPIRetryClient.Tests
 		public SignhostApiRetryClientTests()
 		{
 			settings = new SignHostApiClientSettings(
-				"AppKey",
-				"AuthKey") {
+				"AppKey") {
 				Endpoint = "http://localhost/api/",
 			};
 

@@ -1,7 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Label="Build">
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <RootNamespace>Signhost.APIClient</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
@@ -9,17 +13,17 @@
     <VersionBuildNumber Condition="'$(VersionBuildNumber)' == ''">0</VersionBuildNumber>
     <VersionPrefix>4.0.$(VersionBuildNumber)</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(SH_VERSION_SUFFIX)</VersionSuffix>
-    <Authors>Evidos</Authors>
+    <Authors>Entrust</Authors>
     <Product>Signhost</Product>
-    <Copyright>Copyright 2019 © Evidos</Copyright>
+    <Copyright>Copyright 2019 © Entrust</Copyright>
     <PackageProjectUrl>https://github.com/Evidos/SignhostClientLibrary.Polly</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageId>SignhostClientLibrary.Polly</PackageId>
+    <PackageId>EntrustSignhostClientLibrary.Polly</PackageId>
     <PackageTags>sign;signing;digital signature;pdf</PackageTags>
     <PackageReleaseNotes>
       * 4.0.0 - Bump to SignhostClientLibrary v4 major version
     </PackageReleaseNotes>
-    <Company>Evidos</Company>
+    <Company>Entrust</Company>
     <Description>A .NET library for the signhost.com api, with a built-in retry mechanism.</Description>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
@@ -36,6 +40,9 @@
     </PackageReference>
     <PackageReference Include="Polly" Version="7.1.1" />
     <PackageReference Include="EntrustSignhostClientLibrary" Version="4.0.584-preview" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+     <None Include="../../README.md" Pack="true" PackagePath="README.md" />
   </ItemGroup>
 </Project>
