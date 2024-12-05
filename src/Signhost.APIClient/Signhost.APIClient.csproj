@@ -31,7 +31,12 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix) $(VersionSufix)</InformationalVersion>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
 
   <ItemGroup Label="Package References">
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" />
