@@ -20,34 +20,59 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Get Latest NuGet Version
+        id: get_version
+        run: |
+          VERSION=$(curl -sL "https://api.nuget.org/v3/registration5-gz-semver2/entrustsignhostclientlibrary.polly/index.json" | gunzip -c | jq -r '.items[].items[].catalogEntry.version' | grep -v '\-' | sort -V | tail -n 1)
+          echo "LATEST_VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "Latest version: $VERSION"
+          IFS='.' read -r -a VERSION_PARTS <<< "$VERSION"
+
+          # Increment the patch version (the third component)
+          PATCH_VERSION=${VERSION_PARTS[2]}
+          PATCH_VERSION=$((PATCH_VERSION + 1))
+
+          # Recombine the version (major.minor.patch)
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH_VERSION"
+
+          # Set the new version as the environment variable
+          echo "LATEST_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
+
+          # Print the new version
+          echo "Latest version: $NEW_VERSION"
+        shell: bash
+
+      # - name: Get Latest NuGet VersionPreview
+      #   id: get_version
+      #   run: |
+      #       # Get the latest NuGet version including '-preview'
+      #       VERSION=$(curl -sL "https://api.nuget.org/v3/registration5-gz-semver2/entrustsignhostclientlibrary.polly/index.json" | gunzip -c | jq -r '.items[].items[].catalogEntry.version' | sort -V | tail -n 1)
+
+      #       # Print the current latest version
+      #       echo "Latest version (including preview): $VERSION"
+
+      #       # Split the version into major, minor, and patch parts
+      #       IFS='.' read -r -a VERSION_PARTS <<< "$VERSION"
+
+      #       # Increment the patch version (the third component)
+      #       PATCH_VERSION=${VERSION_PARTS[2]}
+      #       PATCH_VERSION=$((PATCH_VERSION + 1))
+
+      #       # Recombine the version (major.minor.patch)
+      #       NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH_VERSION-preview"
+
+      #       # Set the new version as the environment variable
+      #       echo "LATEST_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
+
+      #       # Print the new incremented version
+      #       echo "Incremented version: $NEW_VERSION"
+      #   shell: bash
+
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '8.x'
-
-      - name: Calculate Version Number
-        id: version
-        run: |
-          MAJOR_VERSION=${{ vars.MAJOR_VERSION }}
-          MINOR_VERSION=${{ vars.MINOR_VERSION }}
-          BUILD_NUMBER=${GITHUB_RUN_NUMBER}
-          BRANCH_NAME=${GITHUB_REF##*/}
-
-          MAJOR_VERSION=${MAJOR_VERSION:-0}
-          MINOR_VERSION=${MINOR_VERSION:-0}
-          VERSION="${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}"
-
-          if [ "$BRANCH_NAME" != "master" ]; then
-            VERSION="${VERSION}-preview"
-          fi
-
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Major Version: $MAJOR_VERSION"
-          echo "Minor Version: $MINOR_VERSION"
-          echo "Build Number: $BUILD_NUMBER"
-          echo "Branch Name: $BRANCH_NAME"
-          echo "Version: $VERSION"
-        shell: bash
 
       - name: Clear NuGet Cache
         run: dotnet nuget locals all --clear
