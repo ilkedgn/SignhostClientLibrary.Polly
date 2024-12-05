@@ -13,6 +13,7 @@
     <VersionBuildNumber Condition="'$(VersionBuildNumber)' == ''">0</VersionBuildNumber>
     <VersionPrefix>4.0.$(VersionBuildNumber)</VersionPrefix>
     <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(SH_VERSION_SUFFIX)</VersionSuffix>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Authors>Entrust</Authors>
     <Product>Signhost</Product>
     <Copyright>Copyright 2019 © Entrust</Copyright>
@@ -31,6 +32,9 @@
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix) $(VersionSufix)</InformationalVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <ItemGroup Label="Package References">
     <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" />
