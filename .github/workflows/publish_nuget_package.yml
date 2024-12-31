@@ -18,35 +18,25 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
-      - name: Calculate Version Number
-        id: version
+      - name: Fetch The Tag
         run: |
-          MAJOR_VERSION=${{ vars.MAJOR_VERSION }}
-          MINOR_VERSION=${{ vars.MINOR_VERSION }}
-          BUILD_NUMBER=${GITHUB_RUN_NUMBER}
-          BRANCH_NAME=${GITHUB_REF##*/}
-
-          MAJOR_VERSION=${MAJOR_VERSION:-0}
-          MINOR_VERSION=${MINOR_VERSION:-0}
-          VERSION="${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}"
-
-          if [ "$BRANCH_NAME" != "master" ]; then
-            VERSION="${VERSION}-preview"
-          fi
-
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Major Version: $MAJOR_VERSION"
-          echo "Minor Version: $MINOR_VERSION"
-          echo "Build Number: $BUILD_NUMBER"
-          echo "Branch Name: $BRANCH_NAME"
-          echo "Version: $VERSION"
+          # Fetch all tags from the remote repository
+          git fetch https://github.com/Evidos/SignhostClientLibrary.git --tags
+          # Get the most recent tag based on the commit date
+          LATEST_TAG=$(git tag --sort=-creatordate | head -n 1)
+          # If the tag contains a "v", remove it to get the version (if needed)
+          VERSION=${LATEST_TAG#v}
+          # Set the version as an environment variable for subsequent steps
+          echo "LATEST_VERSION=${VERSION}" >> $GITHUB_ENV
+          # Print the version for debugging
+          echo "Version ${VERSION}"
         shell: bash
 
       - name: Clear NuGet Cache
@@ -77,5 +67,5 @@ jobs:
         run: |
           dotnet nuget push '**/*.nupkg' --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
         env:
-          POLLY_TEST: ${{ secrets.NUGET_KEY }}
+          NUGET_API_KEY: ${{ secrets.NUGET_KEY }}
         if: ${{ github.event.pull_request.head.repo.fork == false }}
